@@ -2,46 +2,54 @@ import React, { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
 import { Route, Routes } from 'react-router-dom'
-import Add from './pages/Add'
-import List from './pages/List'
-import Orders from './pages/Orders'
 import Login from './components/Login'
- import { ToastContainer} from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import Dashboard from './pages/Dashboard'
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL
-export const currency='$'
-// console.log("Backend URL:", backendUrl);
 
 const App = () => {
-  const [token,setToken]=useState(localStorage.getItem('token') ? localStorage.getItem('token'):'')
+  const [token, setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token') : '')
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  useEffect(()=>{
-    localStorage.setItem('token',token)
-  },[token])
+  useEffect(() => {
+    localStorage.setItem('token', token)
+  }, [token])
+
   return (
     <div className='bg-gray-50 min-h-screen'>
-      <ToastContainer/>
-      { token === "" ? 
-      <Login setToken={setToken}/>  
-      : <>
-       <Navbar setToken={setToken}/>
-       <hr />
-       <div className="flex w-full">
-        <Sidebar/>
-        <div className="w-[70%] mx-auto  ml-[max(5vw,25px)] my-8 text-gray-600 text-base">
-          <Routes>
-            <Route path='/add' element={<Add token={token} />}/>
-             <Route path='/list' element={<List token={token}/>}/>
-            <Route path='/order' element={<Orders token={token}/>}/>
-          </Routes>
-        </div>
-       </div>
-       
-      </>
+      <ToastContainer />
+      {token === "" ?
+        <Login setToken={setToken} />
+        :
+        <>
+          {/* Main Layout Container */}
+          <div className='flex h-screen flex-col md:flex-row'>
+            {/* Sidebar */}
+            <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+
+            {/* Main Content Area */}
+            <div className='flex-1 flex flex-col overflow-hidden md:ml-0'>
+              {/* Navbar */}
+              <Navbar setToken={setToken} />
+
+              {/* Page Content */}
+              <main className='flex-1 overflow-y-auto pt-6 md:pt-8 px-4 md:px-8 pb-6'>
+                <Routes>
+                  <Route path='/dashboard' element={<Dashboard />} />
+                  {/* Add more routes here as needed */}
+                  {/* <Route path='/users' element={<Users />} />
+                  <Route path='/analytics' element={<Analytics />} />
+                  <Route path='/reports' element={<Reports />} />
+                  <Route path='/notifications' element={<Notifications />} />
+                  <Route path='/settings' element={<Settings />} /> */}
+                </Routes>
+              </main>
+            </div>
+          </div>
+        </>
       }
-     
-     
     </div>
   )
 }

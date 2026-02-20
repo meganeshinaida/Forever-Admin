@@ -1,12 +1,30 @@
 import React from 'react'
-import {assets} from '../assets/assets'
+import { FiLogOut, FiUser } from 'react-icons/fi'
 
-const Navbar = ({setToken}) => {
+const Navbar = ({ setToken }) => {
   return (
-    <div className='flex items-center py-2 px-[4%] justify-between'>
-      <img src={assets.logo } alt="" className='w-[max(10%,80px)]' />
-      <button onClick={()=>setToken('')} className='bg-gray-600 text-white px-5 py-2 sm:px-7 rounded-full text-xs sm:text-sm' >Logout</button>
-    </div>
+    <nav className='w-full bg-white shadow-sm'>
+      <div className='flex items-center justify-between py-3 px-6 md:px-10'>
+        <div className='text-2xl font-bold text-gray-900 md:hidden'>Admin</div>
+        <div className='hidden md:block'>
+          <h1 className='text-xl font-semibold text-gray-800'>Dashboard</h1>
+        </div>
+
+        <div className='flex items-center gap-4'>
+          <div className='flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200'>
+            <FiUser size={20} className='text-gray-600' />
+            <span className='text-sm text-gray-700 hidden sm:inline'>Profile</span>
+          </div>
+          <button
+            onClick={() => setToken('')}
+            className='flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition text-sm'
+          >
+            <FiLogOut size={18} />
+            <span className='hidden sm:inline'>Logout</span>
+          </button>
+        </div>
+      </div>
+    </nav>
   )
 }
 
